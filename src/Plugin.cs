@@ -55,9 +55,6 @@ namespace ImperiumOfMan
                 FactionType = FactionType.Corp,
                 AllianceType = "iom_alliance",
                 SpawnMissionChance = 0.1f,
-                Strategies = [ new(1f, FactionStrategy.Expansion) ],
-                StrategyDurationMinHours = 672,
-                StrategyDurationMaxHours = 1344,
                 GuardCreatureId = "elite_sbn",
                 AgentCreatureId = "civilian",
                 MinQmorphosWhenVictims = 0,
@@ -73,7 +70,13 @@ namespace ImperiumOfMan
                 Id = "iom_alliance",
                 ContentDescriptor = alliance,
                 AllowStrife = false,
-                TradeFactionLists = ["iom_faction", "ChurchRevelation", "SBN"],
+                DefaultFactionType = FactionType.Corp,
+                TradeFactionLists =
+                [
+                    "iom_faction",
+                    "ChurchRevelation",
+                    "SBN"
+                ],
             });
             Data.Descriptors["alliances"].AddDescriptor("iom_alliance", alliance);
             #endregion
@@ -288,13 +291,13 @@ namespace ImperiumOfMan
                 MaxDurability = 120,
                 MinDurabilityAfterRepair = 0,
                 Unbreakable = false,
-                RepairCategory = "engineering_weapon",
+                RepairItemIds = ["plastic", "rusty_plates"],
                 Width = 3,
                 Height = 3,
                 DropChanceOnBroken = 0.2f,
                 AddServoArm = true,
-                TotalItemsWeightMult = 0.4f,
-                ReloadTurnBonus = 2
+                ReloadTurnMod = -2,
+                BackpackWeightMult = 0.35f,
             };
             Data.Items.AddRecord("iom_sevitor_backpack", servitorBackpackItem);
             Data.Descriptors["backpacks"].AddDescriptor("iom_sevitor_backpack", servitorBackpack);
@@ -322,11 +325,11 @@ namespace ImperiumOfMan
                 MaxDurability = 110,
                 MinDurabilityAfterRepair = 0,
                 Unbreakable = false,
-                RepairCategory = "firearms_weapon",
+                RepairItemIds = ["weapon_parts", "spring", "armor_plates"],
                 WeaponClass = WeaponClass.AssaultRifle,
                 WeaponSubClass = WeaponSubClass.Firearm,
                 RequiredAmmo = "Heavy",
-                OverrideAmmo = string.Empty,
+                OverrideAmmo = [],
                 DefaultAmmoId = "rifle_basic_ammo",
                 DefaultGrenadeId = string.Empty,
                 Damage = new()
@@ -340,12 +343,8 @@ namespace ImperiumOfMan
                 Firemodes = ["basic_rifle_single", "basic_rifle_shortauto"],
                 Range = 6,
                 ReloadDuration = 4,
-                ReloadOneClip = false,
                 MagazineCapacity = 20,
                 AllowedGrenadeIds = [],
-                WoundChanceOnPierce = 0,
-                ArmorPenetration = 0.25f,
-                FovLookAngleMult = 1,
             };
             Data.Items.AddRecord("iom_bolter", bolterItem);
             Data.Descriptors["rangeweapons"].AddDescriptor("iom_bolter", bolterDesc);
@@ -373,11 +372,11 @@ namespace ImperiumOfMan
                 MaxDurability = 100,
                 MinDurabilityAfterRepair = 0,
                 Unbreakable = false,
-                RepairCategory = "laser_weapon",
+                RepairItemIds = ["lens", "bulb", "microelectronics_parts"],
                 WeaponClass = WeaponClass.AssaultRifle,
                 WeaponSubClass = WeaponSubClass.Firearm,
                 RequiredAmmo = "BatteryCells",
-                OverrideAmmo = string.Empty,
+                OverrideAmmo = [],
                 DefaultAmmoId = "battery_basic_ammo",
                 DefaultGrenadeId = string.Empty,
                 Damage = new()
@@ -391,12 +390,8 @@ namespace ImperiumOfMan
                 Firemodes = ["basic_energy_rifle_single", "basic_energy_rifle_shortauto"],
                 Range = 7,
                 ReloadDuration = 2,
-                ReloadOneClip = false,
                 MagazineCapacity = 10,
                 AllowedGrenadeIds = [],
-                WoundChanceOnPierce = 0,
-                ArmorPenetration = 0.05f,
-                FovLookAngleMult = 0.9f,
             };
             Data.Items.AddRecord("iom_lasgun", lasgunItem);
             Data.Descriptors["rangeweapons"].AddDescriptor("iom_lasgun", lasgunDesc);
@@ -419,11 +414,11 @@ namespace ImperiumOfMan
                 MaxDurability = 110,
                 MinDurabilityAfterRepair = 0,
                 Unbreakable = false,
-                RepairCategory = "laser_weapon",
+                RepairItemIds = ["lens", "bulb", "microelectronics_parts"],
                 WeaponClass = WeaponClass.Pistol,
                 WeaponSubClass = WeaponSubClass.Plasma,
                 RequiredAmmo = "BatteryCells",
-                OverrideAmmo = string.Empty,
+                OverrideAmmo = [],
                 DefaultAmmoId = "battery_basic_ammo",
                 DefaultGrenadeId = string.Empty,
                 Damage = new()
@@ -437,12 +432,8 @@ namespace ImperiumOfMan
                 Firemodes = ["basic_energy_pistol_single", "basic_energy_pistol_burst"],
                 Range = 3,
                 ReloadDuration = 4,
-                ReloadOneClip = false,
                 MagazineCapacity = 7,
                 AllowedGrenadeIds = [],
-                WoundChanceOnPierce = 0,
-                ArmorPenetration = 0.00f,
-                FovLookAngleMult = 1f,
             };
             Data.Items.AddRecord("iom_plasma_pistol", plasmaPistolItem);
             Data.Descriptors["rangeweapons"].AddDescriptor("iom_plasma_pistol", plasmaPistolDesc);
@@ -469,7 +460,7 @@ namespace ImperiumOfMan
                 WeaponClass = WeaponClass.Flamethrower,
                 WeaponSubClass = WeaponSubClass.Plasma,
                 RequiredAmmo = "Gas",
-                OverrideAmmo = "implicted_flamethrower",
+                OverrideAmmo = ["implicted_flamethrower"],
                 DefaultAmmoId = "gas_ammo",
                 DefaultGrenadeId = string.Empty,
                 Damage = new()
@@ -483,12 +474,8 @@ namespace ImperiumOfMan
                 Firemodes = ["plasma_energy_burst", "plasma_energy_shortauto"],
                 Range = 2,
                 ReloadDuration = 4,
-                ReloadOneClip = false,
                 MagazineCapacity = 60,
                 AllowedGrenadeIds = [],
-                WoundChanceOnPierce = 0,
-                ArmorPenetration = 0.3f,
-                FovLookAngleMult = 0.7f,
             };
             Data.Items.AddRecord("iom_melta", meltaItem);
             Data.Descriptors["rangeweapons"].AddDescriptor("iom_melta", meltaDesc);
@@ -511,11 +498,11 @@ namespace ImperiumOfMan
                 MaxDurability = 110,
                 MinDurabilityAfterRepair = 0,
                 Unbreakable = false,
-                RepairCategory = "laser_weapon",
+                RepairItemIds = ["lens", "bulb", "microelectronics_parts"],
                 WeaponClass = WeaponClass.MarksmanRifle,
                 WeaponSubClass = WeaponSubClass.Firearm,
                 RequiredAmmo = "BatteryCells",
-                OverrideAmmo = string.Empty,
+                OverrideAmmo = [],
                 DefaultAmmoId = "battery_basic_ammo",
                 DefaultGrenadeId = string.Empty,
                 Damage = new()
@@ -529,12 +516,8 @@ namespace ImperiumOfMan
                 Firemodes = ["basic_energy_rifle_single"],
                 Range = 9,
                 ReloadDuration = 3,
-                ReloadOneClip = false,
                 MagazineCapacity = 10,
                 AllowedGrenadeIds = [],
-                WoundChanceOnPierce = 0,
-                ArmorPenetration = 0.2f,
-                FovLookAngleMult = 0.8f,
             };
             Data.Items.AddRecord("iom_lassniper", lassniperItem);
             Data.Descriptors["rangeweapons"].AddDescriptor("iom_lassniper", lassniperDesc);
